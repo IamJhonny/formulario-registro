@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Welcome to UTESA </title>
+	<link rel="stylesheet" type="text/css" href="estilos.css">
+</head>
+<body onload="cargarDatos();">
+	<h3> Formulario de captura de datos </h3>
+	<table>
+		<tr>
+			<th>Matricula:</th>
+			<td><input type="text" id="matricula"/></td>
+		</tr>
+		<tr>
+			<th>Nombre:</th>
+			<td><input type="text" id="nombre"/></td>
+		</tr>
+		<tr>
+			<th>Apellido:</th>
+			<td><input type="text" id="apellido"/></td>
+		</tr>
+		<tr>
+			<th>Carrera:</th>
+			<td><input type="text" id="carrera"/></td>
+		</tr>
+		<tr>
+			<th>Sexo:</th>
+			<td><input type="text" id="sexo"/></td>
+		</tr>
+		<tr>
+			<th>Color:</th>
+			<td><input type="text" id="color"/></td>
+		</tr>
+	</table>
+	<button type="button" onClick="guardarDatos();">Guardar</button>
+	<br/>
+	<br/>
+	<br/>
+	<fieldset>
+		<center>
+		<legend>Datos Agregados</legend>
+	    </center>
+	    <br/>
+	    <br/>
+		<table id="tableJ">
+			<thead>
+				<tr>
+					<th>Matricula</th>
+					<th>Nombre</th>
+					<th>Apellido</th>
+					<th>Carrera</th>
+					<th>Sexo</th>
+					<th>Color Fav</th>
+				</tr>
+			</thead>
+			<tbody id="tbDatos">
+				
+			</tbody>
+		</table>
+	</fieldset>
+
+	<script>
+		var DATOS = [];
+
+		function guardarDatos() {
+
+			inps = document.getElementsByTagName('input');
+			
+			/* Este codigo no me dejaba hacer mas de un registro asi que lo comente
+
+			/*for(k in inps){
+				if (inps[k].value == ''){
+					alert("Debe completar " + inps[k].id);
+						return false;
+				}
+			}*/ 
+
+			persona = {};
+			persona.matricula = document.getElementById('matricula').value;
+			persona.nombre = document.getElementById('nombre').value;
+			persona.apellido = document.getElementById('apellido').value;
+			persona.carrera = document.getElementById('carrera').value;
+		    persona.sexo = document.getElementById('sexo').value;
+			persona.color = document.getElementById('color').value;
+			DATOS.push(persona);
+
+			localStorage.setItem('datos', JSON.stringify(DATOS));
+
+			mostrarDatos();
+			
+			for(k in inps){
+				inps[k].value = '';
+			}
+		}
+
+		function cargarDatos(){
+
+			tmp = localStorage.getItem('datos');
+			if(tmp != null){
+				DATOS = JSON.parse(tmp);
+				mostrarDatos();
+			}
+		}
+
+		function mostrarDatos(){
+			dest = document.getElementById('tbDatos');
+			dest.innerHTML = "";
+
+			for(k in DATOS){
+				persona = DATOS[k];
+				tr = document.createElement('tr');
+
+				for(y in persona){
+					td = document.createElement('td');
+					td.innerHTML = persona[y];
+					tr.appendChild(td);
+				}
+
+				dest.appendChild(tr);
+			}
+		}
+	</script>
+</body>
+</html>
